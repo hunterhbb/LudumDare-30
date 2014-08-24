@@ -29,6 +29,7 @@ var res = {
     Floor_png : "res/floor.png",
     Crystal_png : "res/crystal.png",
     Crystal_off_png : "res/crystal_off.png",
+    Crystal_on_png : "res/crystal_on.png",
 
     rope_h_png : "res/rope_h.png",
     rope_v_png : "res/rope_v.png",

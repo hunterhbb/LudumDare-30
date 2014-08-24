@@ -36,6 +36,8 @@ var MoveController = {
 
     crystal_objs : null,
 
+    crystal_on_sprs : null,
+
     trap_objs : null,
 
 
@@ -52,6 +54,11 @@ var MoveController = {
         this.rope_objs = [];
         for (var i = 0; i < 36; i++){
             this.rope_objs[i] = [];
+        }
+
+        this.crystal_on_sprs = [];
+        for (var k = 0; k < 36; k++){
+            this.crystal_on_sprs[k] = [];
         }
 
         this.steps = [];
@@ -225,10 +232,30 @@ var MoveController = {
             var cry_x = Math.floor( (crystal_o.x + crystal_o.width/2) / 16 );
             var cry_y = Math.floor( (crystal_o.y + crystal_o.height/2) / 16 );
 
+            var flag = false;
+
             if (this.rope_objs[cry_x][cry_y]){
                 c_num ++;
+                flag = true;
             } else if (this.man_current_p.x === cry_x && this.man_current_p.y === cry_y){
                 c_num ++;
+                flag = true;
+            }
+
+            if (flag) {
+                if ( !this.crystal_on_sprs[cry_x][cry_y]){
+                    var sprite = new cc.Sprite(res.Crystal_on_png);
+                    sprite.setPosition(16 * cry_x + 8, 16 * cry_y + 8);
+                    this.game_layer.addChild(sprite, 50);
+                    this.crystal_on_sprs[cry_x][cry_y] = sprite;
+                }
+            }
+            else {
+                if (this.crystal_on_sprs[cry_x][cry_y]){
+                    var sprite = this.crystal_on_sprs[cry_x][cry_y];
+                    sprite.removeFromParent();
+                    this.crystal_on_sprs[cry_x][cry_y] = undefined;
+                }
             }
         }
 
@@ -362,7 +389,6 @@ var MoveController = {
             this.last_add = true;
             this.last_repeat = false;
 
-            console.log(this.rope_num);
         }
 
         if (isRemove) {
